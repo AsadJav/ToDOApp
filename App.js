@@ -22,13 +22,24 @@ import TaskComponent from './src/Components/TaskComponent';
 import TaskDetailsScreen from './src/Screens/TaskDetailsScreen';
 import DisplayDetailsScreen from './src/Screens/DisplayDetailsScreen';
 import HomeNavigator from './src/Navigation/HomeNavigator';
+//import {store, persistor} from './src/Redux/Store';
+import { store } from "./src/Redux/Store";
+import {Provider} from 'react-redux';
+import {PersistGate} from 'redux-persist/integration/react';
 
 export default function App()
 {
   return(
-  <NavigationContainer>
-    <HomeNavigator />
-  </NavigationContainer>
+    // <Provider>
+      //<PersistGate loading={null} persistor={persistor}>
+      <Provider store={store}>
+        <NavigationContainer>
+          <HomeNavigator />
+        </NavigationContainer>
+      </Provider>
+      //</PersistGate>
+    // </Provider>
+
    //<HomeScreen/>
   //<TaskComponent/>
   // <TaskDetailsScreen/>
