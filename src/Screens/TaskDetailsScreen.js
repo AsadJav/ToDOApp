@@ -1,5 +1,5 @@
 import React,{useState} from 'react';
-import {View,StyleSheet} from 'react-native';
+import {View,StyleSheet,Platform} from 'react-native';
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
@@ -9,21 +9,90 @@ import AppTextInput from '../Components/AppTextInput';
 import { COLORS } from '../utils/COLORS';
 import AppButton from '../Components/AppButton';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import DetailsComponent from '../Components/DetailsComponent';
 
 
 function TaskDetailsScreen({navigation,route}) {
     const data = route.params
     const [title, setTitle] = useState(data?.title || "");
     const [sub, setSub] = useState(data?.sub || "");
-    const [date, setDate] = useState(data?.DnD || "");
+    const [dt, setDt] = useState(data?.DnD || "");
+    const [isPickerShow, setIsPickerShow] = useState(false);
+    const [date, setDate] = useState(new Date());
+    const [time,setTime] = useState(data?.time || "");
+    const [mode,setMode] = useState('date');
+    const [updt, setUpdt] = useState(data?.updt || false);
+
+    const showPicker = () => {
+      setIsPickerShow(true);
+    };
+  
+    const onChange = (event, value) => {
+      if (Platform.OS === 'android') {
+        setIsPickerShow(false);
+      }
+      //console.log(value.toDateString(),"F",date.toDateString())
+      const currentDate = value || date;
+      setDate(currentDate);
+      setDt(date.toDateString())
+      console.log("Now",date)
+      console.log(date.toDateString())
+      let tempDate = new Date(currentDate)
+      let fDate = tempDate.toDateString()
+      let ftime = tempDate.getHours() +  ':' + tempDate.getMinutes()
+      setDt(fDate)
+      setTime(ftime)
+
+    };
+      const showMode = currentMode => {
+    setIsPickerShow(true);
+    setMode(currentMode);
+  };
+    //   const onChange = (event, selectedDate) => {
+//     const currentDate = selectedDate || date;
+//     setShow(Platform.OS === 'ios');
+//     setDate(currentDate);
+
+//     let tempDate = new Date(currentDate);
+//     let fDate = tempDate.toDateString();
+//     let fTime = tempDate.getHours() + ':' + tempDate.getMinutes();
+//     setDt(fDate);
+//     setTime(fTime);
+//   };
   return (
     <View style={styles.container}>
         <AppHeader icon1={"arrow-back"} onPress1={()=>{navigation.navigate("HomeScreen")}} />
         <View style={styles.detailsStyle}>
         <AppTextInput placeholderTxt={"Task Title"} TxtInputStyle={{marginBottom:hp(3)}} value={title} onChangeText={setTitle}/>
         <AppTextInput placeholderTxt={"Add Sub Tasks"} TxtInputStyle={{marginBottom:hp(3)}} value={sub} onChangeText={setSub}/>
-        <AppTextInput placeholderTxt={"DateTimePicker"} TxtInputStyle={{marginBottom:hp(3)}} value={date} onChangeText={setDate}/>
-        <AppButton buttonName={"Save"} color={COLORS.purple} onPress={()=>{navigation.goBack(); data.addData({id:Math.random(),title:title,sub:sub,DnD:date})}}/>
+        <DetailsComponent heading="Select Date"
+          TextStyle={styles.txt}
+          data={dt}
+          style={styles.tp1}
+          IconName="calendar-outline"
+          IconSize={30}
+          IconColor={COLORS.white}
+          onPress={() => showMode('date')}/>
+          <DetailsComponent heading="Select Time"
+          TextStyle={styles.txt}
+          data={time}
+          style={styles.tp}
+          IconName="alarm-outline"
+          IconSize={30}
+          IconColor={COLORS.white}
+          onPress={() => showMode('time')}/>
+        <AppTextInput placeholderTxt={"DateTimePicker"} TxtInputStyle={{marginBottom:hp(3)}}/>
+        <AppButton buttonName={"Save"} color={COLORS.purple} onPress={()=>{navigation.goBack(); if(updt == false){data.addData({id:Math.random(),title:title,sub:sub,DnD:dt,time:time})}else{console.log("Ok..Updated");data.updt({title:title,sub:sub,DnD:dt,time:time})}}}/>
+        {isPickerShow && (
+        <DateTimePicker
+            testID="datetimepicker"
+            value={date}
+            mode={mode}
+            is24Hour={false}
+            display="default"
+            onChange={onChange}
+        />
+      )}
         </View>
     </View>
   );
@@ -33,12 +102,25 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor:COLORS.purple,
-    //alignItems:'center',
   },
   detailsStyle:{
     marginTop: hp(2),
     alignItems: 'center',
-  }
+  },
+    txt: {
+    color: COLORS.white,
+    fontSize: 16,
+  },
+    tp: {
+    fontSize: 16,
+    color: COLORS.white,
+    marginRight: wp(72),
+  },
+    tp1: {
+    fontSize: 16,
+    color: COLORS.white,
+    marginRight: wp(50),
+  },
 });
 
 export default TaskDetailsScreen;

@@ -7,9 +7,9 @@ import {
 import { COLORS } from '../utils/COLORS';
 
   
-function TaskComponent({title,sub,DnD,sNo,navigation}) {
+function TaskComponent({title,sub,DnD,time,sNo,navigation}) {
   return (
-    <TouchableOpacity style={styles.container} activeOpacity={0.5} onPress={()=>{navigation.navigate({name:'Display',params:{title:title,sub:sub,DnD:DnD}})}}>
+    <TouchableOpacity style={styles.container} activeOpacity={0.5} onPress={()=>{navigation.navigate({name:'Display',params:{title:title,sub:sub,DnD:DnD,time:time}})}}>
         <Text style={styles.taskHeader}>{title}</Text>
         <Text style={styles.taskDate}>{DnD}</Text>
         {sNo && <Text>Hwllo</Text>}

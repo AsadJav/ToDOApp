@@ -11,12 +11,15 @@ function DisplayDetailsScreen({navigation,route}) {
     const data = route.params
   return (
     <View style={styles.container}>
-        <AppHeader icon1={"arrow-back"} icon2={"add-circle-outline"} onPress1={()=>{navigation.navigate("HomeScreen")}} onPress2={()=>{navigation.navigate({name:"Details",params:{title:data.title,sub:data.sub,DnD:data.DnD}})}}/>
+        <AppHeader icon1={"arrow-back"} icon2={"add-circle-outline"} onPress1={()=>{navigation.navigate("HomeScreen")}} onPress2={()=>{navigation.navigate({name:"Details",params:{title:data.title,sub:data.sub,DnD:data.DnD,time:data.time,updt:true}})}}/>
         <Text>{data.title+data.DnD }</Text>
         <View style={styles.viewStyle}>
             <Text style={styles.txt}>Task Title: {data.title}</Text>
-            <Text style={styles.txt}>Task Title: {data.sub}</Text>
+            <Text style={styles.txt}>Task sub: {data.sub}</Text>
             <Text style={styles.txt}>Due Date: {data.DnD}</Text>
+            <Text style={styles.txt}>Due Time: {data.time}</Text>
+            <Text style={styles.txt}>Due D: {data.DnD}</Text>
+
         </View>
     </View>
   );
