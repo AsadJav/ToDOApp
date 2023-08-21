@@ -10,6 +10,8 @@ import { COLORS } from '../utils/COLORS';
 import AppButton from '../Components/AppButton';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import DetailsComponent from '../Components/DetailsComponent';
+import {useDispatch} from 'react-redux';
+import { updateTask } from '../Redux/TaskSlice';
 
 
 function TaskDetailsScreen({navigation,route}) {
@@ -23,15 +25,12 @@ function TaskDetailsScreen({navigation,route}) {
     const [mode,setMode] = useState('date');
     const [updt, setUpdt] = useState(data?.updt || false);
 
-    const showPicker = () => {
-      setIsPickerShow(true);
-    };
+    const dispatch = useDispatch();
   
     const onChange = (event, value) => {
       if (Platform.OS === 'android') {
         setIsPickerShow(false);
       }
-      //console.log(value.toDateString(),"F",date.toDateString())
       const currentDate = value || date;
       setDate(currentDate);
       setDt(date.toDateString())
@@ -48,20 +47,13 @@ function TaskDetailsScreen({navigation,route}) {
     setIsPickerShow(true);
     setMode(currentMode);
   };
-    //   const onChange = (event, selectedDate) => {
-//     const currentDate = selectedDate || date;
-//     setShow(Platform.OS === 'ios');
-//     setDate(currentDate);
-
-//     let tempDate = new Date(currentDate);
-//     let fDate = tempDate.toDateString();
-//     let fTime = tempDate.getHours() + ':' + tempDate.getMinutes();
-//     setDt(fDate);
-//     setTime(fTime);
-//   };
+  const updateData = obj => {
+    dispatch(updateTask(obj));
+    console.log('Task updated')
+  };
   return (
     <View style={styles.container}>
-        <AppHeader icon1={"arrow-back"} onPress1={()=>{navigation.navigate("HomeScreen")}} />
+        <AppHeader icon1={"arrow-back"} onPress1={()=>{navigation.goBack()}} />
         <View style={styles.detailsStyle}>
         <AppTextInput placeholderTxt={"Task Title"} TxtInputStyle={{marginBottom:hp(3)}} value={title} onChangeText={setTitle}/>
         <AppTextInput placeholderTxt={"Add Sub Tasks"} TxtInputStyle={{marginBottom:hp(3)}} value={sub} onChangeText={setSub}/>
@@ -82,7 +74,17 @@ function TaskDetailsScreen({navigation,route}) {
           IconColor={COLORS.white}
           onPress={() => showMode('time')}/>
         <AppTextInput placeholderTxt={"DateTimePicker"} TxtInputStyle={{marginBottom:hp(3)}}/>
-        <AppButton buttonName={"Save"} color={COLORS.purple} onPress={()=>{navigation.goBack(); if(updt == false){data.addData({id:Math.random(),title:title,sub:sub,DnD:dt,time:time})}else{console.log("Ok..Updated");data.updt({title:title,sub:sub,DnD:dt,time:time})}}}/>
+        <AppButton buttonName={"Save"} color={COLORS.purple} 
+        onPress={()=>{navigation.navigate('HomeScreen');
+        if(updt == false){
+          data.addData({id:Math.random(),title:title,sub:sub,DnD:dt,time:time})
+        }
+        else{
+          console.log("Ok..Updated");
+          let obj = {id:data?.id,title:title,sub:sub,DnD:dt,time:time,indexNo:data?.indexNo}
+          console.log(obj)
+          updateData(obj);
+        }}}/>
         {isPickerShow && (
         <DateTimePicker
             testID="datetimepicker"
@@ -91,6 +93,7 @@ function TaskDetailsScreen({navigation,route}) {
             is24Hour={false}
             display="default"
             onChange={onChange}
+            minimumDate={new Date()}
         />
       )}
         </View>
