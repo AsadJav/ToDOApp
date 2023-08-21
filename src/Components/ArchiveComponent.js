@@ -7,65 +7,35 @@ import {
 import { COLORS } from '../utils/COLORS';
 import AppIcon from './AppIcon';
 import {useDispatch} from 'react-redux';
-import { deleteTask } from '../Redux/TaskSlice';
+import { addTask, deleteTask } from '../Redux/TaskSlice';
 import { addArchiveTask, deleteArchiveTask } from '../Redux/ArchiveSlice';
 import { addCompletedTask } from '../Redux/CompletedSlice';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 
 
   
-function TaskComponent({id,title,sub,DnD,time,sNo,navigation}) {
+function ArchiveComponent({id,title,sub,DnD,time,sNo,navigation}) {
   //console.log("id",id)
   const dispatch = useDispatch();
 
-  const deleteFunc = id => {
-    console.log("Hello Id",id);
-  dispatch(deleteTask(id));
+  const unarchiveFunc = obj => {
+    console.log("Hello Archive Id: ",obj.id);
+  dispatch(deleteArchiveTask(obj.id));
     console.log('Deleted');
-};
-const addArchiveFunc = obj => {
-  //console.log("Hello Id",id);
-  dispatch(addArchiveTask(obj))
-  console.log('Added archive');
-  dispatch(deleteTask(obj.id));
-  console.log('Deleted OK');
-};
-const addCompletedFunc = obj => {
-  //console.log("Hello Id",id);
-  dispatch(addCompletedTask(obj));
-  console.log('Added archive');
-  dispatch(deleteTask(obj.id));
-  console.log('Deleted OK');
+    dispatch(addTask(obj))
 };
   const rightSwipeActions = () => {
     return (
       <View style={styles.animatedBtn}>
         <View
         style={{
-          backgroundColor: COLORS.red,
+          backgroundColor: COLORS.gray,
           justifyContent: 'center',
           alignItems: 'flex-end',
+          width:wp(20)
         }}
       >
-        <AppIcon IconName={"trash"} IconSize={30} IconStyle={styles.iconBtn} IconColor={COLORS.white} onPressIcon={()=>{console.log("Hello",id);deleteFunc(id)}}/>
-      </View>
-      <View
-        style={{
-          backgroundColor: COLORS.navy,
-          justifyContent: 'center',
-          alignItems: 'flex-end',
-        }}
-      >
-        <AppIcon IconName={"archive"} IconSize={30} IconStyle={styles.iconBtn} IconColor={COLORS.white} onPressIcon={()=>{addArchiveFunc({id:id,title:title,sub:sub,DnD:DnD,time:time})}}/>
-      </View>
-      <View
-        style={{
-          backgroundColor: COLORS.lightgreen,
-          justifyContent: 'center',
-          alignItems: 'flex-end',
-        }}
-      >
-       <AppIcon IconName={"checkbox-outline"} IconSize={30} IconStyle={styles.iconBtn} IconColor={COLORS.white} onPressIcon={()=>{addCompletedFunc({id:id,title:title,sub:sub,DnD:DnD,time:time})}}/>
+        <AppIcon IconName={"close"} IconSize={30} IconStyle={styles.iconBtn} IconColor={COLORS.white} onPressIcon={()=>{console.log("Hello",id);unarchiveFunc({id:id,title:title,sub:sub,DnD:DnD,time:time})}}/>
       </View>
       </View>
       
@@ -75,8 +45,7 @@ const addCompletedFunc = obj => {
 
   return (
     <Swipeable renderRightActions={rightSwipeActions}>
-              
-          <TouchableOpacity style={styles.container} activeOpacity={0.5} onPress={()=>{navigation.navigate({name:'Display',params:{id:id,title:title,sub:sub,DnD:DnD,time:time,noUpdt:false}})}}>
+          <TouchableOpacity style={styles.container} activeOpacity={0.5} onPress={()=>{navigation.navigate({name:'Display',params:{id:id,title:title,sub:sub,DnD:DnD,time:time,noUpdt:true}})}}>
         <Text style={styles.taskHeader}>{title}</Text>
         <Text style={styles.taskDate}>{DnD}</Text>
         {sNo && <Text>Hwllo</Text>}
@@ -147,4 +116,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default TaskComponent;
+export default ArchiveComponent;

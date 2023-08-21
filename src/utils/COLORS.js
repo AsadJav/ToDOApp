@@ -3,4 +3,10 @@ export const COLORS = {
     purple: 'purple',
     black: 'black',
     gray: 'gray',
+    lightgreen: 'lightgreen',
+    green: 'green',
+    blue: 'blue',
+    lightblue: 'lightblue',
+    red: 'red',
+    navy: 'navy',
   };
