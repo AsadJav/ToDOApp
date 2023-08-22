@@ -8,8 +8,6 @@ import { COLORS } from '../utils/COLORS';
 import AppIcon from './AppIcon';
 
 function AppHeader({icon1, icon2,onPress1,onPress2}) {
-
-    console.log(icon1,icon2)
   return (
     <View style={styles.container}>
         <View style={styles.headerStyle}>

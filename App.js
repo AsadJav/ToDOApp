@@ -22,25 +22,36 @@ import TaskComponent from './src/Components/TaskComponent';
 import TaskDetailsScreen from './src/Screens/TaskDetailsScreen';
 import DisplayDetailsScreen from './src/Screens/DisplayDetailsScreen';
 import HomeNavigator from './src/Navigation/HomeNavigator';
-//import {store, persistor} from './src/Redux/Store';
 import { store,persistor } from "./src/Redux/Store";
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import MyTabs from './src/Navigation/TabNavigator';
+import ProfileScreen from './src/Screens/ProfileScreen';
 //import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function App()
 {
   return(
-    // <GestureHandlerRootView style={{ flex: 1 }}>
-            <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-        <NavigationContainer>
-          <MyTabs />
-        </NavigationContainer>
-        </PersistGate>
-      </Provider>
-    // </GestureHandlerRootView>
+    // <Provider store={store}>
+    //   <PersistGate loading={null} persistor={persistor}>
+    //   <ProfileScreen/>
+    //   </PersistGate>
+          
+    // </Provider>
+
+    <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+  <NavigationContainer>
+  <AuthNavigator/>
+</NavigationContainer>
+    </PersistGate>
+  </Provider>
+    //<LoginScreen/>
+
+    //<RegisterScreen/>
+    //<GestureHandlerRootView style={{ flex: 1 }}>
+           
+    //</GestureHandlerRootView>
    //<HomeScreen/>
   //<TaskComponent/>
   // <TaskDetailsScreen/>
