@@ -9,10 +9,17 @@ import AppIcon from '../Components/AppIcon';
 import AppTextInput from '../Components/AppTextInput';
 import AppButton from '../Components/AppButton';
 import auth from '@react-native-firebase/auth';
+import { addDataToFirestore, removeDataFromFirestore, updateDataInFirestore } from '../FIrebase/FireStore';
+import {useSelector, useDispatch} from 'react-redux';
+import { addUser } from '../Redux/PersonSlice';
 
 function LoginScreen({navigation}) {
   const [email,setEmail] = useState("");
   const [password,setPassword] = useState("");
+
+  let user ={}
+  const dispatch = useDispatch();
+
   const verifyUser=()=>{
     auth().signInWithEmailAndPassword(email,password).then(() => {
       console.log('signed in!');
@@ -22,9 +29,11 @@ function LoginScreen({navigation}) {
     <View style={styles.container}>
         <AppIcon IconName={"checkmark-circle-outline"} IconColor={COLORS.white} IconSize={90} IconStyle={styles.iconStyle}/>
         <AppTextInput placeholderTxt={"Email"} TxtInputStyle={{marginBottom:hp(3)}} value={email} onChangeText={(txt)=>setEmail(txt)}/>
-        <AppTextInput placeholderTxt={"Password"} value={password} onChangeText={(txt)=>setPassword(txt)}/>
+        <AppTextInput placeholderTxt={"Password"} value={password} onChangeText={(txt)=>setPassword(txt)} password={true}/>
         <AppButton buttonName={"Login"} color={COLORS.purple} onPress={()=>{//verifyUser();
-        navigation.navigate("TabHome")}}/>
+        user.email = email;user.password = password;
+        addDataToFirestore("Add Firestore");updateDataInFirestore("Update Firestore");removeDataFromFirestore("Remove Firestore");
+        dispatch(addUser(user));navigation.navigate("TabHome")}}/>
         <View style={styles.c2}>
             <Text style={styles.txt}>
                 Have Not Registered Yet? 

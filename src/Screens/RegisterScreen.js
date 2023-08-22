@@ -10,7 +10,7 @@ import AppTextInput from '../Components/AppTextInput';
 import AppButton from '../Components/AppButton';
 import auth from '@react-native-firebase/auth';
 import {useSelector, useDispatch} from 'react-redux';
-import { addUser } from '../Redux/UserSlice';
+import { addUser } from '../Redux/PersonSlice';
 
 function RegisterScreen({navigation}) {
   const [name,setName] = useState("");

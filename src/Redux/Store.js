@@ -4,10 +4,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import TaskSlice from './TaskSlice';
 import ArchiveSlice from './ArchiveSlice';
 import CompletedSlice from './CompletedSlice';
-import UserSlice from './UserSlice';
+import PersonSlice from './PersonSlice';
 
 const rootReducer = combineReducers({
-  user: UserSlice,
+  person: PersonSlice,
   tasks: TaskSlice ,
   archives: ArchiveSlice,
   completed: CompletedSlice,
