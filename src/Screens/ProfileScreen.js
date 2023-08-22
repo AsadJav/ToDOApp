@@ -7,8 +7,11 @@ import {
 import AppIcon from '../Components/AppIcon';
 import { COLORS } from '../utils/COLORS';
 import AppButton from '../Components/AppButton';
+import {useSelector, useDispatch} from 'react-redux';
 
 function ProfileScreen({navigation}) {
+  const userData = useSelector((state) => state.user);
+  console.log(userData);
   return (
     <>
             <View style={styles.topViewStyle}>
@@ -16,8 +19,8 @@ function ProfileScreen({navigation}) {
         </View>
     <View style={styles.container}>
         <AppIcon IconName={'person-circle-outline'} IconColor={COLORS.purple} IconSize={150} IconStyle={styles.pIcon}/>
-        <Text style={styles.txtHeader}>John Doe</Text>
-        <Text style={styles.txtSubHeader}>johndoe1991@gmail.com</Text>
+        <Text style={styles.txtHeader}>{userData.name}</Text>
+        <Text style={styles.txtSubHeader}>{userData.email}</Text>
         <AppButton buttonName={'Log Out'} color={COLORS.white} style={styles.btnStyle} onPress={()=>{navigation.navigate('Logout')}}/>
     </View>
     </>
