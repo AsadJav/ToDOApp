@@ -23,14 +23,15 @@ function DisplayDetailsScreen({navigation,route}) {
         {data?.noUpdt == false && <AppHeader icon1={"arrow-back"} icon2={"add-circle-outline"} onPress1={()=>{navigation.navigate("HomeScreen")}} onPress2={()=>{updateFunc(data.id)}}/>}
         {data?.noUpdt == true && <AppHeader icon1={"arrow-back"} onPress1={()=>{navigation.goBack()}}/>}
         <View style={styles.viewStyle}>
+        <View >
         <Text style={styles.txt}>Task Id: {data.id}</Text>
-            <Text style={styles.txt}>Task Title: {data.title}</Text>
-            <Text style={styles.txt}>Task sub: {data.sub}</Text>
+            <Text style={styles.txt}>Task: {data.title}</Text>
+            <Text style={styles.subTxt}>Sub-Tasks: {data.sub}</Text>
             <Text style={styles.txt}>Due Date: {data.DnD}</Text>
             <Text style={styles.txt}>Due Time: {data.time}</Text>
-            <Text style={styles.txt}>Due D: {data.DnD}</Text>
-
         </View>
+        </View>
+
     </View>
   );
 }
@@ -39,12 +40,17 @@ const styles = StyleSheet.create({
   container: {
     flex:1,
     backgroundColor:COLORS.white,
+    
   },
   viewStyle:{
-    //alignItems: 'center',
+    alignItems:'center',
+    marginTop:hp(5),
   },
   txt:{
-    fontSize:18,fontWeight:'bold',color:COLORS.black
+    fontSize:22,fontWeight:'bold',color:COLORS.purple,marginTop:hp(2),
+  },
+  subTxt:{
+    fontSize:20,fontWeight:'bold',color:COLORS.purple,marginTop:hp(2),
   }
 });
 

@@ -12,7 +12,7 @@ import MyTabs from './TabNavigator';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 const Stack = createNativeStackNavigator();
-
+//gestureHandlerRootHOC(MyTabs)
 const AuthNavigator = () => (
   <Stack.Navigator
     screenOptions={{headerShown: false}}

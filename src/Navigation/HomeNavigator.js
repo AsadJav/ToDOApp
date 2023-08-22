@@ -7,7 +7,7 @@ import DisplayDetailsScreen from '../Screens/DisplayDetailsScreen';
 import TaskDetailsScreen from '../Screens/TaskDetailsScreen';
 import AuthNavigator from './AuthNavigator';
 import MyTabs from './TabNavigator';
-import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
+import ProfileScreen from '../Screens/ProfileScreen';
 
 
 const Stack = createNativeStackNavigator();
@@ -15,11 +15,12 @@ const Stack = createNativeStackNavigator();
 const HomeNavigator = () => (
   <Stack.Navigator
     screenOptions={{headerShown: false}}
-    initialRouteName={HomeScreen}>
+    >
     <Stack.Screen name="HomeScreen" component={HomeScreen} />
     <Stack.Screen name="Display" component={DisplayDetailsScreen}/>
     <Stack.Screen name="Details" component={TaskDetailsScreen}/>
     <Stack.Screen name="Logout" component={AuthNavigator}/>
+    <Stack.Screen name='Pf' component={ProfileScreen}/>
    
 
   </Stack.Navigator>

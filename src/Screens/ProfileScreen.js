@@ -10,7 +10,7 @@ import AppButton from '../Components/AppButton';
 import {useSelector, useDispatch} from 'react-redux';
 
 function ProfileScreen({navigation}) {
-  const userData = useSelector((state) => state.user);
+  const userData = useSelector(state => state.person);
   console.log(userData);
   return (
     <>
@@ -19,8 +19,8 @@ function ProfileScreen({navigation}) {
         </View>
     <View style={styles.container}>
         <AppIcon IconName={'person-circle-outline'} IconColor={COLORS.purple} IconSize={150} IconStyle={styles.pIcon}/>
-        <Text style={styles.txtHeader}>{userData.name}</Text>
-        <Text style={styles.txtSubHeader}>{userData.email}</Text>
+        {/* <Text style={styles.txtHeader}>Name: {userData.name}</Text> */}
+        <Text style={styles.txtSubHeader}>Email:</Text>
         <AppButton buttonName={'Log Out'} color={COLORS.white} style={styles.btnStyle} onPress={()=>{navigation.navigate('Logout')}}/>
     </View>
     </>
@@ -40,10 +40,10 @@ const styles = StyleSheet.create({
     backgroundColor:COLORS.white,
   },
   pIcon:{
-    marginTop:hp(10),
+    //marginTop:hp(10),
   },
-  txtHeader:{fontSize:24,fontWeight:'bold',color:COLORS.black},
-  txtSubHeader:{fontSize:20,fontWeight:'bold',color:COLORS.black},
+  txtHeader:{fontSize:24,fontWeight:'bold',color:COLORS.purple},
+  txtSubHeader:{fontSize:20,fontWeight:'bold',color:COLORS.purple},
   btnStyle:{backgroundColor:COLORS.purple},
 });
 

@@ -6,10 +6,10 @@ import {
   } from 'react-native-responsive-screen';
 import { COLORS } from '../utils/COLORS';
 
-function AppTextInput({placeholderTxt,TxtInputStyle,value,onChangeText}) {
+function AppTextInput({placeholderTxt,TxtInputStyle,value,onChangeText,password}) {
   return (
     <View style={styles.container}>
-        <TextInput placeholder={placeholderTxt} style={[TxtInputStyle,styles.tin]} placeholderTextColor={COLORS.white} value={value} onChangeText={onChangeText}/>
+        <TextInput placeholder={placeholderTxt} style={[TxtInputStyle,styles.tin]} placeholderTextColor={COLORS.white} value={value} onChangeText={onChangeText} secureTextEntry={password}/>
     </View>
   );
 }
