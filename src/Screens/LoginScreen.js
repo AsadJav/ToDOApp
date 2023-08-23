@@ -9,7 +9,7 @@ import AppIcon from '../Components/AppIcon';
 import AppTextInput from '../Components/AppTextInput';
 import AppButton from '../Components/AppButton';
 import auth from '@react-native-firebase/auth';
-import { addDataToFirestore, removeDataFromFirestore, updateDataInFirestore } from '../FIrebase/UserDb';
+import { addDataToFirestore, getUserDataFromFirestore, removeDataFromFirestore, updateDataInFirestore } from '../FIrebase/UserDb';
 import {useSelector, useDispatch} from 'react-redux';
 import { addUser } from '../Redux/UserSlice';
 import { getTasksFromFirestore } from '../FIrebase/TasksDb';
@@ -24,6 +24,11 @@ function LoginScreen({navigation}) {
   const verifyUser=()=>{
     auth().signInWithEmailAndPassword(email,password).then(() => {
       console.log('signed in!');
+      getUserDataFromFirestore(email).then((value) => {
+        console.log("Value",value);
+        dispatch(addUser(value));
+      })
+      //dispatch(addUser())
     }).catch(err => {console.log(err);});
   }
   return (
@@ -31,10 +36,11 @@ function LoginScreen({navigation}) {
         <AppIcon IconName={"checkmark-circle-outline"} IconColor={COLORS.white} IconSize={90} IconStyle={styles.iconStyle}/>
         <AppTextInput placeholderTxt={"Email"} TxtInputStyle={{marginBottom:hp(3)}} value={email} onChangeText={(txt)=>setEmail(txt)}/>
         <AppTextInput placeholderTxt={"Password"} value={password} onChangeText={(txt)=>setPassword(txt)} password={true}/>
-        <AppButton buttonName={"Login"} color={COLORS.purple} onPress={()=>{//verifyUser();
+        <AppButton buttonName={"Login"} color={COLORS.purple} onPress={()=>{verifyUser();
         user.email = email;user.password = password;
-        dispatch(addUser(user));
-        getTasksFromFirestore()
+        //dispatch(addUser(user));
+        //getTasksFromFirestore()
+        
         navigation.navigate("TabHome")}}/>
         <View style={styles.c2}>
             <Text style={styles.txt}>

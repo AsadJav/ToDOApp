@@ -1,4 +1,7 @@
 import firestore from '@react-native-firebase/firestore';
+import {useSelector, useDispatch} from 'react-redux';
+import { addTask } from '../Redux/TaskSlice';
+
 
 
 const addTasksToFirestore = (data) => {
@@ -11,7 +14,7 @@ const addTasksToFirestore = (data) => {
     subTitle: data.subTitle,
     date: data.date,
     time: data.time,
-    pripority: "success",
+    priority: "success",
   })
   .then(() => {
     console.log('User added!');
@@ -30,7 +33,7 @@ const getTasksFromFirestore = async() => {
     console.log('Total users: ', querySnapshot.size);
 
     querySnapshot.forEach(documentSnapshot => {
-      console.log('User ID: ', documentSnapshot.data());
+      console.log(documentSnapshot.data(),"Hello");      
     });
   });
     // const users = await firestore().collection('Tasks').get();

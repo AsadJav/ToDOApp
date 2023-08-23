@@ -1,5 +1,5 @@
 import React,{useState} from 'react';
-import {View,StyleSheet,Platform} from 'react-native';
+import {View,StyleSheet,Platform,Text, ScrollView} from 'react-native';
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
@@ -14,6 +14,9 @@ import {useDispatch} from 'react-redux';
 import { updateTask } from '../Redux/TaskSlice';
 import AppSubInput from '../Components/AppSubInput';
 import { addTasksToFirestore, updateTasksInFirestore } from '../FIrebase/TasksDb';
+import {Picker} from '@react-native-picker/picker';
+import AppIcon from '../Components/AppIcon';
+
 
 
 function TaskDetailsScreen({navigation,route}) {
@@ -27,6 +30,7 @@ function TaskDetailsScreen({navigation,route}) {
     const [mode,setMode] = useState('date');
     const [updt, setUpdt] = useState(data?.updt || false);
     const [addSub, setAddSub] = useState(0);
+    const [selectedLanguage, setSelectedLanguage] = useState();
 
 
     const dispatch = useDispatch();
@@ -58,11 +62,16 @@ function TaskDetailsScreen({navigation,route}) {
   return (
     <View style={styles.container}>
         <AppHeader icon1={"arrow-back"} onPress1={()=>{navigation.goBack()}} />
-        <View style={styles.detailsStyle}>
-        <AppTextInput placeholderTxt={"Task Title"} TxtInputStyle={{marginBottom:hp(3)}} value={title} onChangeText={setTitle}/>
-        <AppSubInput placeholderTxt={"Add Sub Task 1"} TxtInputStyle={{marginBottom:hp(3),marginLeft:wp(10),width:wp(80)}} value={sub} onChangeText={setSub} onSubmitEditing={()=>{setAddSub(1)}}/>
-        {addSub >= 1 && <AppSubInput placeholderTxt={"Add Sub Tasks 2"} TxtInputStyle={{marginBottom:hp(3),marginLeft:wp(10),width:wp(80)}} onSubmitEditing={()=>{setAddSub(2)}}/>}
-        {addSub == 2 && <AppSubInput placeholderTxt={"Add Sub Tasks 3"} TxtInputStyle={{marginBottom:hp(3),marginLeft:wp(10),width:wp(80)}} />}        
+        <ScrollView >
+          <View style={styles.detailsStyle}>
+          <AppTextInput placeholderTxt={"Task Title"} TxtInputStyle={{marginBottom:hp(3)}} value={title} onChangeText={setTitle}/>
+        <View style={styles.subView}>
+          <AppIcon IconName={"add-circle"} IconColor={COLORS.white} IconSize={30} onPressIcon={()=>{setAddSub(addSub+1)}}/>
+        <AppSubInput placeholderTxt={"Add Sub Task 1"} TxtInputStyle={{marginBottom:hp(3),marginLeft:wp(3),width:wp(80)}} value={sub} onChangeText={setSub}/>
+        </View>
+        {addSub >= 1 && <AppSubInput placeholderTxt={"Add Sub Tasks 2"} TxtInputStyle={{marginBottom:hp(3),marginLeft:wp(10),width:wp(80)}} />}
+        {addSub >= 2 && <AppSubInput placeholderTxt={"Add Sub Tasks 3"} TxtInputStyle={{marginBottom:hp(3),marginLeft:wp(10),width:wp(80)}} />}
+        {addSub >= 3 && <AppSubInput placeholderTxt={"Add Sub Tasks 4"} TxtInputStyle={{marginBottom:hp(3),marginLeft:wp(10),width:wp(80)}} />}        
         <DetailsComponent heading="Select Date"
           TextStyle={styles.txt}
           data={dt}
@@ -80,12 +89,25 @@ function TaskDetailsScreen({navigation,route}) {
           IconColor={COLORS.white}
           onPress={() => showMode('time')}/>
         {/* <AppTextInput placeholderTxt={"DateTimePicker"} TxtInputStyle={{marginBottom:hp(3)}}/> */}
-        <AppButton buttonName={"Save"} color={COLORS.purple} 
+        <View>
+        <Text style={styles.txt}>Set Pripority</Text>
+        <Picker
+          selectedValue={selectedLanguage}
+          mode='dropdown'
+          style={styles.pick}
+          dropdownIconColor={COLORS.white}
+          onValueChange={(itemValue, itemIndex) =>
+          setSelectedLanguage(itemValue)}>
+            <Picker.Item label="Normal" value="normal"/>
+            <Picker.Item label="High" value="high"/>
+        </Picker>
+        </View>
+        <AppButton buttonName={"Save"} color={COLORS.purple} style={{marginBottom:hp(5)}}
         onPress={()=>{navigation.navigate('HomeScreen');
         if(updt == false){
           let randomNumber = Math.random();
           data.addData({id:randomNumber,title:title,sub:sub,DnD:dt,time:time})
-          addTasksToFirestore({id:randomNumber,title:title,subTitle:[sub],date:dt,time:time})
+          //addTasksToFirestore({id:randomNumber,title:title,subTitle:[sub],date:dt,time:time})
         }
         else{
           console.log("Ok..Updated");
@@ -105,7 +127,8 @@ function TaskDetailsScreen({navigation,route}) {
             minimumDate={new Date()}
         />
       )}
-        </View>
+          </View>
+        </ScrollView>
     </View>
   );
 }
@@ -132,6 +155,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: COLORS.white,
     marginRight: wp(50),
+  },
+  pick: {
+    height: hp(5),
+    width: wp(90),
+    color: COLORS.white,
+    backgroundColor: COLORS.purple,
+  },
+  subView: {
+    flexDirection:'row',
+    alignItems:'center',
   },
 });
 
