@@ -10,7 +10,7 @@ import AppTextInput from '../Components/AppTextInput';
 import AppButton from '../Components/AppButton';
 import auth from '@react-native-firebase/auth';
 import {useSelector, useDispatch} from 'react-redux';
-import { addUser } from '../Redux/PersonSlice';
+import { addUserDataToFirestore } from '../FIrebase/UserDb';
 
 function RegisterScreen({navigation}) {
   const [name,setName] = useState("");
@@ -29,7 +29,9 @@ function RegisterScreen({navigation}) {
     user.password = password;
     console.log("User created Name", {name: name, email: email, password: password});
     console.log('User account created & signed in!');
-    dispatch(addUser(user));
+    addUserDataToFirestore({name:name,email:email});
+    console.log("Added Firestore")
+
   })
   .catch(error => {
     if (error.code === 'auth/email-already-in-use') {
@@ -49,7 +51,11 @@ function RegisterScreen({navigation}) {
         <AppTextInput placeholderTxt={"Full Name"} TxtInputStyle={{marginBottom:hp(3)}} value={name} onChangeText={(txt)=>setName(txt)}/>
         <AppTextInput placeholderTxt={"Email"} TxtInputStyle={{marginBottom:hp(3)}} value={email} onChangeText={(txt)=>setEmail(txt)}/>
         <AppTextInput placeholderTxt={"Password"} value={password} onChangeText={(txt)=>setPassword(txt)}/>
-        <AppButton buttonName={"Register"} color={COLORS.purple} onPress={()=>{createUser();navigation.navigate("Login")}}/>
+        <AppButton buttonName={"Register"} color={COLORS.purple} onPress={()=>{
+          createUser();
+          
+          navigation.navigate("Login");
+          }}/>
         <TouchableOpacity activeOpacity={0.7} onPress={()=>{navigation.navigate("Login")}}>
         <Text style={styles.ls}>Already Registered?</Text>
 

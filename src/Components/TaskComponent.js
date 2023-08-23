@@ -11,6 +11,7 @@ import { deleteTask } from '../Redux/TaskSlice';
 import { addArchiveTask, deleteArchiveTask } from '../Redux/ArchiveSlice';
 import { addCompletedTask } from '../Redux/CompletedSlice';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
+import { removeTasksFromFirestore } from '../FIrebase/TasksDb';
 
 
   
@@ -20,8 +21,9 @@ function TaskComponent({id,title,sub,DnD,time,sNo,navigation}) {
 
   const deleteFunc = id => {
     console.log("Hello Id",id);
-  dispatch(deleteTask(id));
+    dispatch(deleteTask(id));
     console.log('Deleted');
+    removeTasksFromFirestore({id});
 };
 const addArchiveFunc = obj => {
   //console.log("Hello Id",id);

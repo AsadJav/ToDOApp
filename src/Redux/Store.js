@@ -4,13 +4,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import TaskSlice from './TaskSlice';
 import ArchiveSlice from './ArchiveSlice';
 import CompletedSlice from './CompletedSlice';
-import PersonSlice from './PersonSlice';
+import UserSlice from './UserSlice';
 
 const rootReducer = combineReducers({
-  person: PersonSlice,
   tasks: TaskSlice ,
   archives: ArchiveSlice,
   completed: CompletedSlice,
+  user: UserSlice,
 });
 
 const persistConfig = {

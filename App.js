@@ -40,12 +40,12 @@ export default function App()
     // </Provider>
 
     <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
-  <NavigationContainer>
-  <AuthNavigator/>
-</NavigationContainer>
-    </PersistGate>
-  </Provider>
+      <PersistGate loading={null} persistor={persistor}>
+        <NavigationContainer>
+          <AuthNavigator/>
+        </NavigationContainer>
+      </PersistGate>
+    </Provider>
     //<LoginScreen/>
 
     //<RegisterScreen/>
