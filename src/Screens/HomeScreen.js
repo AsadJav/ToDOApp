@@ -13,6 +13,7 @@ import { COLORS } from '../utils/COLORS';
 //import AppIcon from '../Components/AppIcon';
 //import { deleteTask } from '../Redux/TaskSlice';
 import { getUserDataFromFirestore } from '../FIrebase/UserDb';
+import { addTasksToFirestore,getTasksFromFirestore } from '../FIrebase/TasksDb';
 //import { addUser } from '../Redux/PersonSlice';
 
 var DATA = [{id:1,title:'Hello1',sub:"ABC",DnD:'Thurs March 15 2024',time:'aba'},{id:2,title:'Hello2',sub:"ABC",DnD:'Thurs March 15 2024',time:'aba'},{id:3,title:'Hello3',sub:"ABC",DnD:'Thurs March 15 2024',time:'aba'},{id:4,title:'Hello4',sub:"ABC",DnD:'Thurs March 15 2024',time:'aba'},{id:5,title:'Hello5',sub:"ABC",DnD:'Thurs March 15 2024',time:'aba'},{id:6,title:'Hello6',sub:"ABC",DnD:'Thurs March 15 2024',time:'aba'},{id:7,title:'Hello7',sub:"ABC",DnD:'Thurs March 15 2024',time:'aba'},{id:8,title:'Hello8',sub:"ABC",DnD:'Thurs March 15 2024',time:'aba'}];
@@ -21,7 +22,10 @@ function HomeScreen({navigation,route}) {
   const dispatch = useDispatch();
   // const data = route.params;
   function addData(data){
-    dispatch(addTask(data))
+    console.log(data);
+    addTasksToFirestore({id:data.id,title:data.title,subTitle:[data.sub],date:data.DnD,time:data.time})
+      
+    //dispatch(addTask(data))
   }
 //dispatch(addUser({email:"Hello"})) 
 LogBox.ignoreLogs([
@@ -29,7 +33,7 @@ LogBox.ignoreLogs([
 ]);
   return (
     <View style={styles.container}>
-        <AppHeader icon1={'funnel-outline'} icon2={"add"} onPress1={()=>{console.log("Filter");getUserDataFromFirestore('sa1T414SyLmKZewWbVJ4')}} onPress2={()=>{navigation.navigate("Details",{addData:addData})}}/>
+        <AppHeader icon1={'funnel-outline'} icon2={"add"} onPress1={()=>{console.log("Filter");getTasksFromFirestore()}} onPress2={()=>{navigation.navigate("Details",{addData:addData})}}/>
         <FlatList
         data={storeData}
         renderItem={({item}) => <TaskComponent id={item.id} title={item.title} sub={item.sub} DnD={item.DnD} time={item.time} navigation={navigation}/>}

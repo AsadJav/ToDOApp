@@ -29,7 +29,7 @@ function RegisterScreen({navigation}) {
     user.password = password;
     console.log("User created Name", {name: name, email: email, password: password});
     console.log('User account created & signed in!');
-    addUserDataToFirestore({name:name,email:email});
+    addUserDataToFirestore({id:email,name:name,email:email,password:password});
     console.log("Added Firestore")
 
   })

@@ -39,18 +39,18 @@ export default function App()
           
     // </Provider>
 
-    <Provider store={store}>
+
+    //<LoginScreen/>
+
+    //<RegisterScreen/>
+    //<GestureHandlerRootView style={{ flex: 1 }}>
+          <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <NavigationContainer>
           <AuthNavigator/>
         </NavigationContainer>
       </PersistGate>
     </Provider>
-    //<LoginScreen/>
-
-    //<RegisterScreen/>
-    //<GestureHandlerRootView style={{ flex: 1 }}>
-           
     //</GestureHandlerRootView>
    //<HomeScreen/>
   //<TaskComponent/>
