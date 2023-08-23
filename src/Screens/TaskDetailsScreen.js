@@ -13,6 +13,7 @@ import DetailsComponent from '../Components/DetailsComponent';
 import {useDispatch} from 'react-redux';
 import { updateTask } from '../Redux/TaskSlice';
 import AppSubInput from '../Components/AppSubInput';
+import { addTasksToFirestore, updateTasksInFirestore } from '../FIrebase/TasksDb';
 
 
 function TaskDetailsScreen({navigation,route}) {
@@ -82,13 +83,16 @@ function TaskDetailsScreen({navigation,route}) {
         <AppButton buttonName={"Save"} color={COLORS.purple} 
         onPress={()=>{navigation.navigate('HomeScreen');
         if(updt == false){
-          data.addData({id:Math.random(),title:title,sub:sub,DnD:dt,time:time})
+          let randomNumber = Math.random();
+          data.addData({id:randomNumber,title:title,sub:sub,DnD:dt,time:time})
+          addTasksToFirestore({id:randomNumber,title:title,subTitle:[sub],date:dt,time:time})
         }
         else{
           console.log("Ok..Updated");
           let obj = {id:data?.id,title:title,sub:sub,DnD:dt,time:time,indexNo:data?.indexNo}
           console.log(obj)
           updateData(obj);
+          updateTasksInFirestore({id:data?.id,title:title,subTitle:[sub],date:dt,time:time})
         }}}/>
         {isPickerShow && (
         <DateTimePicker

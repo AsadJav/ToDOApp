@@ -1,5 +1,5 @@
 import React,{Component, useState} from 'react';
-import {Animated,View,StyleSheet,FlatList,Text} from 'react-native';
+import {Animated,View,StyleSheet,FlatList,Text,LogBox} from 'react-native';
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
@@ -8,13 +8,12 @@ import AppHeader from '../Components/AppHeader';
 import TaskComponent from '../Components/TaskComponent';
 import {useSelector, useDispatch} from 'react-redux';
 import { addTask } from '../Redux/TaskSlice';
-import { RectButton } from 'react-native-gesture-handler';
-import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { COLORS } from '../utils/COLORS';
-import { addArchiveTask } from '../Redux/ArchiveSlice';
-import AppIcon from '../Components/AppIcon';
-import { deleteTask } from '../Redux/TaskSlice';
-import { addUser } from '../Redux/PersonSlice';
+//import { addArchiveTask } from '../Redux/ArchiveSlice';
+//import AppIcon from '../Components/AppIcon';
+//import { deleteTask } from '../Redux/TaskSlice';
+import { getUserDataFromFirestore } from '../FIrebase/UserDb';
+//import { addUser } from '../Redux/PersonSlice';
 
 var DATA = [{id:1,title:'Hello1',sub:"ABC",DnD:'Thurs March 15 2024',time:'aba'},{id:2,title:'Hello2',sub:"ABC",DnD:'Thurs March 15 2024',time:'aba'},{id:3,title:'Hello3',sub:"ABC",DnD:'Thurs March 15 2024',time:'aba'},{id:4,title:'Hello4',sub:"ABC",DnD:'Thurs March 15 2024',time:'aba'},{id:5,title:'Hello5',sub:"ABC",DnD:'Thurs March 15 2024',time:'aba'},{id:6,title:'Hello6',sub:"ABC",DnD:'Thurs March 15 2024',time:'aba'},{id:7,title:'Hello7',sub:"ABC",DnD:'Thurs March 15 2024',time:'aba'},{id:8,title:'Hello8',sub:"ABC",DnD:'Thurs March 15 2024',time:'aba'}];
 function HomeScreen({navigation,route}) {
@@ -24,10 +23,13 @@ function HomeScreen({navigation,route}) {
   function addData(data){
     dispatch(addTask(data))
   }
-
+//dispatch(addUser({email:"Hello"})) 
+LogBox.ignoreLogs([
+  'Non-serializable values were found in the navigation state',
+]);
   return (
     <View style={styles.container}>
-        <AppHeader icon1={'funnel-outline'} icon2={"add"} onPress1={()=>{console.log("Filter");dispatch(addUser({email:"Hello"}))}} onPress2={()=>{navigation.navigate("Details",{addData:addData})}}/>
+        <AppHeader icon1={'funnel-outline'} icon2={"add"} onPress1={()=>{console.log("Filter");getUserDataFromFirestore('sa1T414SyLmKZewWbVJ4')}} onPress2={()=>{navigation.navigate("Details",{addData:addData})}}/>
         <FlatList
         data={storeData}
         renderItem={({item}) => <TaskComponent id={item.id} title={item.title} sub={item.sub} DnD={item.DnD} time={item.time} navigation={navigation}/>}

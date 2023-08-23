@@ -11,6 +11,8 @@ import {useSelector, useDispatch} from 'react-redux';
 function DisplayDetailsScreen({navigation,route}) {
     const data = route.params
     const storeData = useSelector(state => state.tasks);
+    // const userData = useSelector(state => state);
+    // console.log(userData)
     const updateFunc = id => {
   console.log(id);
   let i = storeData.findIndex(item => item.id === id);

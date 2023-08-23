@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeNavigator from './HomeNavigator';
-import TaskDetailsScreen from '../Screens/TaskDetailsScreen';
-import HomeScreen from '../Screens/HomeScreen';
+//import TaskDetailsScreen from '../Screens/TaskDetailsScreen';
+//import HomeScreen from '../Screens/HomeScreen';
 import { COLORS } from '../utils/COLORS';
 import AppIcon from '../Components/AppIcon';
 import ArchivesScreen from '../Screens/ArchivesScreen';
