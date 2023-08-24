@@ -23,9 +23,9 @@ function HomeScreen({navigation,route}) {
   // const data = route.params;
   function addData(data){
     console.log(data);
-    addTasksToFirestore({id:data.id,title:data.title,subTitle:[data.sub],date:data.DnD,time:data.time})
+    //addTasksToFirestore({id:data.id,title:data.title,subTitle:[data.sub],date:data.DnD,time:data.time})
       
-    //dispatch(addTask(data))
+    dispatch(addTask(data))
   }
 //dispatch(addUser({email:"Hello"})) 
 LogBox.ignoreLogs([
@@ -33,7 +33,7 @@ LogBox.ignoreLogs([
 ]);
   return (
     <View style={styles.container}>
-        <AppHeader icon1={'funnel-outline'} icon2={"add"} onPress1={()=>{console.log("Filter");getTasksFromFirestore()}} onPress2={()=>{navigation.navigate("Details",{addData:addData})}}/>
+        <AppHeader icon1={'funnel-outline'} icon2={"add"} onPress1={()=>{navigation.navigate("Filter")}} onPress2={()=>{navigation.navigate("Details",{addData:addData})}}/>
         <FlatList
         data={storeData}
         renderItem={({item}) => <TaskComponent id={item.id} title={item.title} sub={item.sub} DnD={item.DnD} time={item.time} navigation={navigation}/>}
