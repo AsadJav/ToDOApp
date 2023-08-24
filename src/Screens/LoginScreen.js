@@ -27,6 +27,7 @@ function LoginScreen({navigation}) {
       getUserDataFromFirestore(email).then((value) => {
         console.log("Value",value);
         dispatch(addUser(value));
+        navigation.navigate("TabHome");
       })
       //dispatch(addUser())
     }).catch(err => {console.log(err);});
@@ -36,12 +37,12 @@ function LoginScreen({navigation}) {
         <AppIcon IconName={"checkmark-circle-outline"} IconColor={COLORS.white} IconSize={90} IconStyle={styles.iconStyle}/>
         <AppTextInput placeholderTxt={"Email"} TxtInputStyle={{marginBottom:hp(3)}} value={email} onChangeText={(txt)=>setEmail(txt)}/>
         <AppTextInput placeholderTxt={"Password"} value={password} onChangeText={(txt)=>setPassword(txt)} password={true}/>
-        <AppButton buttonName={"Login"} color={COLORS.purple} onPress={()=>{//verifyUser();
+        <AppButton buttonName={"Login"} color={COLORS.purple} onPress={()=>{verifyUser();
         //user.email = email;user.password = password;
         //dispatch(addUser(user));
         //getTasksFromFirestore()
         
-        navigation.navigate("TabHome")}}/>
+        }}/>
         <View style={styles.c2}>
             <Text style={styles.txt}>
                 Have not registered yet? 

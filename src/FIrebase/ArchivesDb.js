@@ -4,17 +4,18 @@ import firestore from '@react-native-firebase/firestore';
 const addArchivesToFirestore = (data) => {
     try{
         firestore()
-  .collection('Archives')
-  .doc(""+data.id)
+  .collection('Users')
+  .doc(""+data.uid).collection('Archives').doc(""+data.id)
   .set({
     title: data.title,
     subTitle: data.subTitle,
     date: data.date,
     time: data.time,
-    pripority: "success",
+    priority: data.priority,
+    dateNo: data.dateNo,
   })
   .then(() => {
-    console.log('User added!');
+    console.log('Archive Task added!');
   });
         }
         catch(err){
@@ -63,12 +64,12 @@ const getArchivesFromFirestore = async() => {
 const removeArchiveFromFirestore = (data) => {
     try{
         firestore()
-  .collection('Archives')
-  .doc(""+data?.id)
-  .delete()
-  .then(() => {
-    console.log('User deleted!');
-  });
+        .collection('Users')
+        .doc(""+data.uid).collection('Archives').doc(''+data.id)
+        .delete()
+        .then(() => {
+          console.log('User deleted!');
+        });
     }
     catch(err){
         console.log(err);

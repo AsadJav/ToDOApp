@@ -4,17 +4,18 @@ import firestore from '@react-native-firebase/firestore';
 const addCompletedToFirestore = (data) => {
     try{
         firestore()
-  .collection('Completed')
-  .doc(""+data.id)
+  .collection('Users')
+  .doc(""+data.uid).collection('Completed').doc(""+data.id)
   .set({
     title: data.title,
     subTitle: data.subTitle,
     date: data.date,
     time: data.time,
-    pripority: "success",
+    priority: data.priority,
+    dateNo: data.dateNo,
   })
   .then(() => {
-    console.log('User added!');
+    console.log('Completed Task added!');
   });
         }
         catch(err){
@@ -43,8 +44,8 @@ const getCompletedFromFirestore = async() => {
 const removeCompletedFromFirestore = (data) => {
     try{
         firestore()
-  .collection('Completed')
-  .doc(""+data?.id)
+  .collection('Users')
+  .doc(""+data.uid).collection('Completed').doc(''+data.id)
   .delete()
   .then(() => {
     console.log('User deleted!');

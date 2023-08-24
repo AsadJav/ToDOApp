@@ -7,6 +7,7 @@ import AppIcon from '../Components/AppIcon';
 import ArchivesScreen from '../Screens/ArchivesScreen';
 import CompletedScreen from '../Screens/CompletedScreen';
 import ProfileScreen from '../Screens/ProfileScreen';
+import PriorityScreen from '../Screens/PriorityScreen';
 //import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 const Tab = createBottomTabNavigator();
@@ -18,6 +19,12 @@ function MyTabs() {
           tabBarLabel: 'Home',
           tabBarIcon: ({ color, size }) => (
             <AppIcon IconName={'home'} IconColor={color} IconSize={size}/>
+          ),
+        }}/>
+        <Tab.Screen name="Priority" component={PriorityScreen} options={{
+          tabBarLabel: 'Priority',
+          tabBarIcon: ({ color, size }) => (
+            <AppIcon IconName={"flash"} IconColor={color} IconSize={size}/>
           ),
         }}/>
       <Tab.Screen name='Achives' component={ArchivesScreen} options={{

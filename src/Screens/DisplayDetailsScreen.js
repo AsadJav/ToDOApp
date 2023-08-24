@@ -10,6 +10,7 @@ import {useSelector, useDispatch} from 'react-redux';
 
 function DisplayDetailsScreen({navigation,route}) {
     const data = route.params
+    console.log(data);
     const storeData = useSelector(state => state.tasks);
     // const userData = useSelector(state => state);
     // console.log(userData)
@@ -18,7 +19,7 @@ function DisplayDetailsScreen({navigation,route}) {
   let i = storeData.findIndex(item => item.id === id);
   let obj = storeData[i];
   console.log(obj);
-  navigation.navigate({name:"Details",params:{id:data?.id,title:data.title,sub:data.sub,DnD:data.DnD,time:data.time,updt:true,indexNo:i}})
+  navigation.navigate({name:"Details",params:{id:data?.id,title:data.title,sub:data.sub,DnD:data.DnD,time:data.time,priority:data.priority,dateNo:data.dateNo,updt:true,indexNo:i}})
 };
   return (
     <View style={styles.container}>
@@ -28,9 +29,14 @@ function DisplayDetailsScreen({navigation,route}) {
         <View >
         <Text style={styles.txt}>Task Id: {data.id}</Text>
             <Text style={styles.txt}>Task: {data.title}</Text>
-            <Text style={styles.subTxt}>Sub-Tasks: {data.sub}</Text>
+            <Text style={styles.subTxt}>Sub Tasks:</Text>
+            {data.sub[0] != "" &&<Text style={styles.subTxt}>- {data.sub[0]}</Text>}
+            {data.sub[1] != "" && <Text style={styles.subTxt}>- {data.sub[1]}</Text>}
+            {data.sub[2] != "" &&<Text style={styles.subTxt}>- {data.sub[2]}</Text>}
+            {data.sub[3] != "" &&<Text style={styles.subTxt}>- {data.sub[3]}</Text>}
             <Text style={styles.txt}>Due Date: {data.DnD}</Text>
             <Text style={styles.txt}>Due Time: {data.time}</Text>
+            <Text style={styles.txt}>Priority: {data.priority}</Text>
         </View>
         </View>
 

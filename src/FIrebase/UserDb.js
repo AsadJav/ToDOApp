@@ -11,7 +11,6 @@ const addUserDataToFirestore = (data) => {
   name: data.name,
   email: data.email,
   password: data.password,
-  
 })
 .then(() => {
 console.log('User added!');

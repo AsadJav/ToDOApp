@@ -10,7 +10,7 @@ import { COLORS } from '../utils/COLORS';
 import AppButton from '../Components/AppButton';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import DetailsComponent from '../Components/DetailsComponent';
-import {useDispatch} from 'react-redux';
+import {useSelector,useDispatch} from 'react-redux';
 import { updateTask } from '../Redux/TaskSlice';
 import AppSubInput from '../Components/AppSubInput';
 import { addTasksToFirestore, updateTasksInFirestore } from '../FIrebase/TasksDb';
@@ -21,6 +21,9 @@ import AppIcon from '../Components/AppIcon';
 
 function TaskDetailsScreen({navigation,route}) {
     const data = route.params
+    console.log(data);
+    const userData = useSelector(state => state.user);
+    console.log(userData.id);
     const [title, setTitle] = useState(data?.title || "");
     const [sub, setSub] = useState(data?.sub || []);
     const [dt, setDt] = useState(data?.DnD || "");
@@ -30,10 +33,12 @@ function TaskDetailsScreen({navigation,route}) {
     const [mode,setMode] = useState('date');
     const [updt, setUpdt] = useState(data?.updt || false);
     const [addSub, setAddSub] = useState(0);
-    const [selectedPriority, setSelectedPriority] = useState("normal");
+    const [selectedPriority, setSelectedPriority] = useState(data?.priority||"normal");
+    const [nDate, setNDate] = useState(data?.ndate || {})
 
+    console.log("nDate: " + nDate)
     console.log(selectedPriority);
-    console.log(sub);
+    console.log(sub[0]);
     const dispatch = useDispatch();
   
     const onChange = (event, value) => {
@@ -46,6 +51,16 @@ function TaskDetailsScreen({navigation,route}) {
       console.log("Now",date)
       console.log(date.toDateString())
       let tempDate = new Date(currentDate)
+      console.log(tempDate,"tD")
+      let newDate = tempDate.getDate()+'-'+tempDate.getMonth()+'-'+tempDate.getFullYear()
+      console.log(newDate);
+      let d = {};
+      //d.date = tempDate.getDate();
+      //d.month = tempDate.getMonth()+1;
+      //d.year = tempDate.getFullYear();
+      //console.log(d);
+      setNDate({date:tempDate.getDate(), month:tempDate.getMonth()+1, year:tempDate.getFullYear()});
+      console.log(nDate, "OK D")
       let fDate = tempDate.toDateString()
       let ftime = tempDate.getHours() +  ':' + tempDate.getMinutes()
       setDt(fDate)
@@ -57,6 +72,7 @@ function TaskDetailsScreen({navigation,route}) {
     setMode(currentMode);
   };
   const updateData = obj => {
+    //updateTasksInFirestore({id:data.id,uid:userData.id,title:data.title,subTitle:data.sub,date:data.DnD,time:data.time,dateNo:data.dateNo,priority:data.priority})
     dispatch(updateTask(obj));
     console.log('Task updated')
   };
@@ -70,9 +86,9 @@ function TaskDetailsScreen({navigation,route}) {
           <AppIcon IconName={"add-circle"} IconColor={COLORS.white} IconSize={30} onPressIcon={()=>{setAddSub(addSub+1)}}/>
         <AppSubInput placeholderTxt={"Add Sub Task 1"} TxtInputStyle={{marginBottom:hp(3),marginLeft:wp(3),width:wp(80)}} value={sub[0]} onChangeText={txt=>{sub[0] = txt;}} onSubmitEditing={()=>{setAddSub(addSub+1)}}/>
         </View>
-        {addSub >= 1 && <AppSubInput placeholderTxt={"Add Sub Tasks 2"} TxtInputStyle={{marginBottom:hp(3),marginLeft:wp(10),width:wp(80)}} value={sub[1]} onChangeText={txt=>{sub[1] = txt;}}/>}
-        {addSub >= 2 && <AppSubInput placeholderTxt={"Add Sub Tasks 3"} TxtInputStyle={{marginBottom:hp(3),marginLeft:wp(10),width:wp(80)}} value={sub[2]} onChangeText={txt=>{sub[2] = txt;}}/>}
-        {addSub >= 3 && <AppSubInput placeholderTxt={"Add Sub Tasks 4"} TxtInputStyle={{marginBottom:hp(3),marginLeft:wp(10),width:wp(80)}} value={sub[3]} onChangeText={txt=>{sub[3] = txt;}}/>}        
+        {addSub >= 1 && <AppSubInput placeholderTxt={"Add Sub Tasks 2"} TxtInputStyle={{marginBottom:hp(3),marginLeft:wp(10),width:wp(80)}} value={sub[1]} onChangeText={txt=>{sub[1] = txt;}} onSubmitEditing={()=>{setAddSub(addSub+1)}}/>}
+        {addSub >= 2 && <AppSubInput placeholderTxt={"Add Sub Tasks 3"} TxtInputStyle={{marginBottom:hp(3),marginLeft:wp(10),width:wp(80)}} value={sub[2]} onChangeText={txt=>{sub[2] = txt;}} onSubmitEditing={()=>{setAddSub(addSub+1)}}/>}
+        {addSub >= 3 && <AppSubInput placeholderTxt={"Add Sub Tasks 4"} TxtInputStyle={{marginBottom:hp(3),marginLeft:wp(10),width:wp(80)}} value={sub[3]} onChangeText={txt=>{sub[3] = txt;}} onSubmitEditing={()=>{setAddSub(addSub+1)}}/>}        
         <DetailsComponent heading="Select Date"
           TextStyle={styles.txt}
           data={dt}
@@ -107,15 +123,16 @@ function TaskDetailsScreen({navigation,route}) {
         onPress={()=>{navigation.navigate('HomeScreen');
         if(updt == false){
           let randomNumber = Math.random();
-          data.addData({id:randomNumber,title:title,sub:sub,DnD:dt,time:time,priority:selectedPriority})
+          data.addData({id:randomNumber,title:title,sub:sub,DnD:dt,time:time,priority:selectedPriority,dateNo:nDate})
           //addTasksToFirestore({id:randomNumber,title:title,subTitle:[sub],date:dt,time:time})
         }
         else{
           console.log("Ok..Updated");
-          let obj = {id:data?.id,title:title,sub:sub,DnD:dt,time:time,indexNo:data?.indexNo}
+          let obj = {id:data?.id,title:title,sub:sub,DnD:dt,time:time,priority:selectedPriority,dateNo:nDate,indexNo:data?.indexNo}
           console.log(obj)
           updateData(obj);
-          //updateTasksInFirestore({id:data?.id,title:title,subTitle:[sub],date:dt,time:time})
+          updateTasksInFirestore({id:data.id,uid:userData.id,title:title,subTitle:sub,date:dt,time:time,dateNo:nDate,priority:selectedPriority})
+          //updateTasksInFirestore({id:data?.id,title:title,subTitle:sub,date:dt,time:time})
         }}}/>
         {isPickerShow && (
         <DateTimePicker
