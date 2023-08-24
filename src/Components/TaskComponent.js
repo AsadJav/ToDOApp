@@ -6,7 +6,7 @@ import {
   } from 'react-native-responsive-screen';
 import { COLORS } from '../utils/COLORS';
 import AppIcon from './AppIcon';
-import {useDispatch} from 'react-redux';
+import {useSelector,useDispatch} from 'react-redux';
 import { deleteTask } from '../Redux/TaskSlice';
 import { addArchiveTask, deleteArchiveTask } from '../Redux/ArchiveSlice';
 import { addCompletedTask } from '../Redux/CompletedSlice';
@@ -15,15 +15,19 @@ import { removeTasksFromFirestore } from '../FIrebase/TasksDb';
 
 
   
-function TaskComponent({id,title,sub,DnD,time,sNo,navigation}) {
+function TaskComponent({id,title,sub,DnD,time,sNo,priority,dateNo,navigation}) {
+  //console.log(priority);
   //console.log("id",id)
+  const userData = useSelector(state => state.user);
+  console.log(userData.id);
+  //var uid = userData.id;
   const dispatch = useDispatch();
 
   const deleteFunc = id => {
     console.log("Hello Id",id);
     dispatch(deleteTask(id));
     console.log('Deleted');
-    removeTasksFromFirestore({id});
+    removeTasksFromFirestore({uid:userData.id,id:id});
 };
 const addArchiveFunc = obj => {
   //console.log("Hello Id",id);
@@ -78,7 +82,7 @@ const addCompletedFunc = obj => {
   return (
     <Swipeable renderRightActions={rightSwipeActions}>
               
-          <TouchableOpacity style={styles.container} activeOpacity={0.5} onPress={()=>{navigation.navigate({name:'Display',params:{id:id,title:title,sub:sub,DnD:DnD,time:time,noUpdt:false}})}}>
+          <TouchableOpacity style={styles.container} activeOpacity={0.5} onPress={()=>{navigation.navigate({name:'Display',params:{id:id,title:title,sub:sub,DnD:DnD,time:time,priority:priority,dateNo:dateNo,noUpdt:false}})}}>
         <Text style={styles.taskHeader}>{title}</Text>
         <Text style={styles.taskDate}>{DnD}</Text>
         {sNo && <Text>Hwllo</Text>}

@@ -7,14 +7,15 @@ import { addTask } from '../Redux/TaskSlice';
 const addTasksToFirestore = (data) => {
     try{
         firestore()
-  .collection('Tasks')
-  .doc(""+data.id)
+  .collection('Users')
+  .doc(""+data.uid).collection('Tasks').doc(""+data.id)
   .set({
     title: data.title,
     subTitle: data.subTitle,
     date: data.date,
     time: data.time,
-    priority: "success",
+    priority: data.priority,
+    dateNo: data.dateNo,
   })
   .then(() => {
     console.log('User added!');
@@ -24,13 +25,13 @@ const addTasksToFirestore = (data) => {
             console.log(err);
         }
 };
-const getTasksFromFirestore = async() => {
+const getTasksFromFirestore = (data) => {
   try{
     firestore()
-.collection('Tasks')
+.collection('Users').doc(""+data.uid).collection('Tasks')
   .get()
   .then(querySnapshot => {
-    console.log('Total users: ', querySnapshot.size);
+    console.log('Total users: ', querySnapshot.docs);
 
     querySnapshot.forEach(documentSnapshot => {
       console.log(documentSnapshot.data(),"Hello");      
@@ -44,19 +45,21 @@ const getTasksFromFirestore = async() => {
   };
 };
 const updateTasksInFirestore = (data) => {
+    console.log("Data",data);
     try{
         firestore()
-  .collection('Tasks')
-  .doc(""+data?.id)
-  .set({
+  .collection('Users')
+  .doc(""+data.uid).collection('Tasks').doc(""+data.id)
+  .update({
     title: data.title,
     subTitle: data.subTitle,
     date: data.date,
     time: data.time,
-    pripority: "success",
+    priority: data.priority,
+    dateNo: data.dateNo,
   })
   .then(() => {
-    console.log('User Updated!');
+    console.log('User updated!');
   });
     }
     catch(err){
@@ -66,8 +69,8 @@ const updateTasksInFirestore = (data) => {
 const removeTasksFromFirestore = (data) => {
     try{
         firestore()
-  .collection('Tasks')
-  .doc(""+data?.id)
+  .collection('Users')
+  .doc(""+data.uid).collection('Tasks').doc(''+data.id)
   .delete()
   .then(() => {
     console.log('User deleted!');
