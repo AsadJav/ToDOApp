@@ -36,15 +36,15 @@ function LoginScreen({navigation}) {
         <AppIcon IconName={"checkmark-circle-outline"} IconColor={COLORS.white} IconSize={90} IconStyle={styles.iconStyle}/>
         <AppTextInput placeholderTxt={"Email"} TxtInputStyle={{marginBottom:hp(3)}} value={email} onChangeText={(txt)=>setEmail(txt)}/>
         <AppTextInput placeholderTxt={"Password"} value={password} onChangeText={(txt)=>setPassword(txt)} password={true}/>
-        <AppButton buttonName={"Login"} color={COLORS.purple} onPress={()=>{verifyUser();
-        user.email = email;user.password = password;
+        <AppButton buttonName={"Login"} color={COLORS.purple} onPress={()=>{//verifyUser();
+        //user.email = email;user.password = password;
         //dispatch(addUser(user));
         //getTasksFromFirestore()
         
         navigation.navigate("TabHome")}}/>
         <View style={styles.c2}>
             <Text style={styles.txt}>
-                Have Not Registered Yet? 
+                Have not registered yet? 
             </Text>
             <TouchableOpacity activeOpacity={0.7} onPress={()=>{navigation.navigate("Register")}}>
                 <Text style={styles.singup}>  Sign up</Text>
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     marginTop: hp(5),
   },
   txt:{color:COLORS.white},
-  singup: {color:COLORS.white},
+  singup: {color:COLORS.white,fontSize:16},
   fp: {marginTop: hp(20),color:COLORS.white},
 });
 

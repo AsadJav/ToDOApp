@@ -22,7 +22,7 @@ import AppIcon from '../Components/AppIcon';
 function TaskDetailsScreen({navigation,route}) {
     const data = route.params
     const [title, setTitle] = useState(data?.title || "");
-    const [sub, setSub] = useState(data?.sub || "");
+    const [sub, setSub] = useState(data?.sub || []);
     const [dt, setDt] = useState(data?.DnD || "");
     const [isPickerShow, setIsPickerShow] = useState(false);
     const [date, setDate] = useState(new Date());
@@ -30,9 +30,10 @@ function TaskDetailsScreen({navigation,route}) {
     const [mode,setMode] = useState('date');
     const [updt, setUpdt] = useState(data?.updt || false);
     const [addSub, setAddSub] = useState(0);
-    const [selectedLanguage, setSelectedLanguage] = useState();
+    const [selectedPriority, setSelectedPriority] = useState("normal");
 
-
+    console.log(selectedPriority);
+    console.log(sub);
     const dispatch = useDispatch();
   
     const onChange = (event, value) => {
@@ -67,11 +68,11 @@ function TaskDetailsScreen({navigation,route}) {
           <AppTextInput placeholderTxt={"Task Title"} TxtInputStyle={{marginBottom:hp(3)}} value={title} onChangeText={setTitle}/>
         <View style={styles.subView}>
           <AppIcon IconName={"add-circle"} IconColor={COLORS.white} IconSize={30} onPressIcon={()=>{setAddSub(addSub+1)}}/>
-        <AppSubInput placeholderTxt={"Add Sub Task 1"} TxtInputStyle={{marginBottom:hp(3),marginLeft:wp(3),width:wp(80)}} value={sub} onChangeText={setSub}/>
+        <AppSubInput placeholderTxt={"Add Sub Task 1"} TxtInputStyle={{marginBottom:hp(3),marginLeft:wp(3),width:wp(80)}} value={sub[0]} onChangeText={txt=>{sub[0] = txt;}} onSubmitEditing={()=>{setAddSub(addSub+1)}}/>
         </View>
-        {addSub >= 1 && <AppSubInput placeholderTxt={"Add Sub Tasks 2"} TxtInputStyle={{marginBottom:hp(3),marginLeft:wp(10),width:wp(80)}} />}
-        {addSub >= 2 && <AppSubInput placeholderTxt={"Add Sub Tasks 3"} TxtInputStyle={{marginBottom:hp(3),marginLeft:wp(10),width:wp(80)}} />}
-        {addSub >= 3 && <AppSubInput placeholderTxt={"Add Sub Tasks 4"} TxtInputStyle={{marginBottom:hp(3),marginLeft:wp(10),width:wp(80)}} />}        
+        {addSub >= 1 && <AppSubInput placeholderTxt={"Add Sub Tasks 2"} TxtInputStyle={{marginBottom:hp(3),marginLeft:wp(10),width:wp(80)}} value={sub[1]} onChangeText={txt=>{sub[1] = txt;}}/>}
+        {addSub >= 2 && <AppSubInput placeholderTxt={"Add Sub Tasks 3"} TxtInputStyle={{marginBottom:hp(3),marginLeft:wp(10),width:wp(80)}} value={sub[2]} onChangeText={txt=>{sub[2] = txt;}}/>}
+        {addSub >= 3 && <AppSubInput placeholderTxt={"Add Sub Tasks 4"} TxtInputStyle={{marginBottom:hp(3),marginLeft:wp(10),width:wp(80)}} value={sub[3]} onChangeText={txt=>{sub[3] = txt;}}/>}        
         <DetailsComponent heading="Select Date"
           TextStyle={styles.txt}
           data={dt}
@@ -90,14 +91,14 @@ function TaskDetailsScreen({navigation,route}) {
           onPress={() => showMode('time')}/>
         {/* <AppTextInput placeholderTxt={"DateTimePicker"} TxtInputStyle={{marginBottom:hp(3)}}/> */}
         <View>
-        <Text style={styles.txt}>Set Pripority</Text>
+        <Text style={styles.txt}>Set Priority</Text>
         <Picker
-          selectedValue={selectedLanguage}
+          selectedValue={selectedPriority}
           mode='dropdown'
           style={styles.pick}
           dropdownIconColor={COLORS.white}
           onValueChange={(itemValue, itemIndex) =>
-          setSelectedLanguage(itemValue)}>
+          setSelectedPriority(itemValue)}>
             <Picker.Item label="Normal" value="normal"/>
             <Picker.Item label="High" value="high"/>
         </Picker>
@@ -106,7 +107,7 @@ function TaskDetailsScreen({navigation,route}) {
         onPress={()=>{navigation.navigate('HomeScreen');
         if(updt == false){
           let randomNumber = Math.random();
-          data.addData({id:randomNumber,title:title,sub:sub,DnD:dt,time:time})
+          data.addData({id:randomNumber,title:title,sub:sub,DnD:dt,time:time,priority:selectedPriority})
           //addTasksToFirestore({id:randomNumber,title:title,subTitle:[sub],date:dt,time:time})
         }
         else{
@@ -114,7 +115,7 @@ function TaskDetailsScreen({navigation,route}) {
           let obj = {id:data?.id,title:title,sub:sub,DnD:dt,time:time,indexNo:data?.indexNo}
           console.log(obj)
           updateData(obj);
-          updateTasksInFirestore({id:data?.id,title:title,subTitle:[sub],date:dt,time:time})
+          //updateTasksInFirestore({id:data?.id,title:title,subTitle:[sub],date:dt,time:time})
         }}}/>
         {isPickerShow && (
         <DateTimePicker
