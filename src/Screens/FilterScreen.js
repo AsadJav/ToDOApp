@@ -34,9 +34,12 @@ function FilterScreen({navigation}) {
       //console.log(obj.dateNo,"hell")
       let dataObj = obj?.dateNo
       console.log(dataObj?.date)
-      if(dataObj?.date >= dateFrom?.date && dataObj?.date <= dateTo?.date){
+      if(dataObj?.month >= dateFrom?.month && dataObj?.month <= dateTo?.month){
+        if(dataObj?.date >= dateFrom?.date || dataObj?.date <= dateTo?.date){     
+            return obj;
+        }
       //tasks.push(obj);
-      return obj;
+ 
     }
     //console.log(tasks)
    })
