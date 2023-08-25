@@ -25,10 +25,10 @@ function PriorityScreen({navigation}) {
     console.log('Tasks',tasks)
   return (
     <View style={styles.container}>
-        <AppHeader icon1={"arrow-back"} onPress1={navigation.goBack()}/>
+      <AppHeader/>
         <FlatList data={tasks}
         keyExtractor={item=>item.id}
-        renderItem={({item}) => <TaskComponent id={item.id} title={item.title} sub={item.sub} DnD={item.DnD} time={item.time} priority={item.priority} dateNo={item.dateNo} navigation={navigation}/>}/>
+        renderItem={({item}) => <TaskComponent id={item.id} title={item.title} sub={item.subTitle} DnD={item.date} time={item.time} priority={item.priority} dateNo={item.dateNo} navigation={navigation}/>}/>
     </View>
   );
 }

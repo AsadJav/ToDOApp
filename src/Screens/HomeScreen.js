@@ -1,4 +1,4 @@
-import React,{Component, useState} from 'react';
+import React,{Component, useState,useEffect} from 'react';
 import {Animated,View,StyleSheet,FlatList,Text,LogBox} from 'react-native';
 import {
     widthPercentageToDP as wp,
@@ -20,15 +20,25 @@ var DATA = [{id:1,title:'Hello1',sub:"ABC",DnD:'Thurs March 15 2024',time:'aba'}
 function HomeScreen({navigation,route}) {
   const storeData = useSelector(state => state.tasks);
   const userData = useSelector(state => state.user);
-  console.log(userData.id);
-  //console.log(storeData);
+  //console.log(userData.id);
+  //console.log(storeData,"NewOnline");
   const dispatch = useDispatch();
+
+  useEffect(()=>{
+    console.log("Hello!");
+    try {
+      //console.log("Stored",storeData)
+      getTasksFromFirestore({uid:userData.id, dispatch: dispatch,tasks: storeData})
+    } catch (error) {
+      console.log(error.message);
+    }
+  },[])
+  
   // const data = route.params;
   function addData(data){
-
     console.log(data);
     addTasksToFirestore({id:data.id,uid:userData.id,title:data.title,subTitle:data.sub,date:data.DnD,time:data.time,dateNo:data.dateNo,priority:data.priority})
-    dispatch(addTask(data))
+    //dispatch(addTask(data))
   }
 //dispatch(addUser({email:"Hello"})) 
 LogBox.ignoreLogs([
@@ -43,7 +53,7 @@ LogBox.ignoreLogs([
         onPress2={()=>{navigation.navigate("Details",{addData:addData})}}/>
         <FlatList
         data={storeData}
-        renderItem={({item}) => <TaskComponent id={item.id} title={item.title} sub={item.sub} DnD={item.DnD} time={item.time} priority={item.priority} dateNo={item.dateNo} navigation={navigation}/>}
+        renderItem={({item}) => <TaskComponent id={item.id} title={item.title} sub={item.subTitle} DnD={item.date} time={item.time} priority={item.priority} dateNo={item.dateNo} navigation={navigation}/>}
         keyExtractor={item => item.id}
       />
     </View>

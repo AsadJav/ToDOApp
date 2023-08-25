@@ -72,8 +72,8 @@ function TaskDetailsScreen({navigation,route}) {
     setMode(currentMode);
   };
   const updateData = obj => {
-    //updateTasksInFirestore({id:data.id,uid:userData.id,title:data.title,subTitle:data.sub,date:data.DnD,time:data.time,dateNo:data.dateNo,priority:data.priority})
-    dispatch(updateTask(obj));
+    updateTasksInFirestore(obj)
+    //dispatch(updateTask(obj));
     console.log('Task updated')
   };
   return (
@@ -128,10 +128,10 @@ function TaskDetailsScreen({navigation,route}) {
         }
         else{
           console.log("Ok..Updated");
-          let obj = {id:data?.id,title:title,sub:sub,DnD:dt,time:time,priority:selectedPriority,dateNo:nDate,indexNo:data?.indexNo}
+          let obj = {id:data?.id,uid:userData.id,title:title,subTitle:sub,date:dt,time:time,priority:selectedPriority,dateNo:nDate,indexNo:data?.indexNo,dispatch:dispatch}
           console.log(obj)
           updateData(obj);
-          updateTasksInFirestore({id:data.id,uid:userData.id,title:title,subTitle:sub,date:dt,time:time,dateNo:nDate,priority:selectedPriority})
+          //updateTasksInFirestore({id:data.id,uid:userData.id,title:title,subTitle:sub,date:dt,time:time,dateNo:nDate,priority:selectedPriority})
           //updateTasksInFirestore({id:data?.id,title:title,subTitle:sub,date:dt,time:time})
         }}}/>
         {isPickerShow && (

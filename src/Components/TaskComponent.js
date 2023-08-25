@@ -18,6 +18,7 @@ import { removeTasksFromFirestore } from '../FIrebase/TasksDb';
 function TaskComponent({id,title,sub,DnD,time,sNo,priority,dateNo,navigation}) {
   //console.log(priority);
   //console.log("id",id)
+  console.log("sub",sub)
   const userData = useSelector(state => state.user);
   console.log(userData.id);
   //var uid = userData.id;
