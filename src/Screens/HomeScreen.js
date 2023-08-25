@@ -37,8 +37,8 @@ LogBox.ignoreLogs([
   return (
     <View style={styles.container}>
         <AppHeader icon1={'funnel-outline'} icon2={"add"} onPress1={()=>{
-          //navigation.navigate("Filter")
-          getTasksFromFirestore({uid:userData.id})
+          navigation.navigate("Filter")
+          //getTasksFromFirestore({uid:userData.id})
         }} 
         onPress2={()=>{navigation.navigate("Details",{addData:addData})}}/>
         <FlatList
